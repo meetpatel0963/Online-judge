@@ -1,0 +1,179 @@
+const express = require("express");
+const router = express.Router();
+const Submission = require("../models/submission");
+const addSubmission = require("../judge/judge");
+const Problem = require("../models/problem");
+const User = require("../models/user");
+const auth = require("../middleware/auth");
+
+router.post("/", auth, (req, res) => {
+  const solution = {
+    problemName: req.body.problemName,
+    code: req.body.code,
+    lang: req.body.lang,
+    userId: req.body.userId,
+    verdict: "",
+  };
+
+  const op = req.body.op;
+  const input = req.body.input;
+
+  let submission = new Submission(solution);
+
+  console.log(submission);
+
+  Problem.findOne({
+    name: req.body.problemName,
+  })
+    .then((problem) => {
+      addSubmission(problem, submission, op, input, (err, result) => {
+        if (err)
+          return res
+            .status(500)
+            .json({ message: "Something Went Wrong! Try Again!!!" });
+
+        let finalResult = [];
+        if (input && op === "customInput") {
+          finalResult = result;
+          return res.send({ finalResult });
+        } else {
+          let verdicts = [],
+            testcases = [];
+          result.forEach((curResult) => {
+            let newResult = {},
+              curTestcase = {
+                time: curResult.time,
+                memory: curResult.memory,
+              };
+
+            for (key in curResult) {
+              if (curResult[key] !== false) {
+                newResult[key] = curResult[key];
+              }
+              if (curResult[key] === true) {
+                newResult["verdict"] = key;
+                curTestcase["verdict"] = key;
+                verdicts.push(key);
+              }
+            }
+            testcases.push(curTestcase);
+            finalResult.push(newResult);
+          });
+
+          submission.result = testcases;
+
+          if (verdicts.includes("CE")) submission.verdict = "CE";
+          else if (verdicts.includes("MLE")) submission.verdict = "MLE";
+          else if (verdicts.includes("TLE")) submission.verdict = "TLE";
+          else if (verdicts.includes("RTE")) submission.verdict = "RTE";
+          else if (verdicts.includes("AC")) submission.verdict = "AC";
+          else if (verdicts.includes("WA")) submission.verdict = "WA";
+
+          console.log(submission);
+
+          if (op === "submit")
+            submission
+              .save()
+              .then(() => {
+                console.log("finalResult: ", finalResult);
+              })
+              .catch((err) =>
+                res.status(500).json({ message: "Something Went Wrong!" })
+              );
+
+          return res.send({ finalResult });
+        }
+      });
+    })
+    .catch((err) => res.status(404).json({ message: "Problem Not Found..." }));
+});
+
+router.put("/", auth, (req, res) => {
+  const problem = req.body.problem;
+  const finalResult = req.body.finalResult;
+  const difficulty = req.body.difficulty;
+
+  let newProblem = problem;
+  newProblem.countTotal += 1;
+
+  let ok = true;
+  finalResult.map((curResult) => {
+    ok &= curResult.verdict === "AC";
+  });
+
+  if (ok) {
+    newProblem.countAC += 1;
+  }
+
+  Problem.findOneAndUpdate({ name: problem.name }, newProblem, {
+    new: true,
+  })
+    .then((result) => {
+      const userId = req.body.userId;
+      console.log(userId);
+      User.findById(userId)
+        .then((user) => {
+          let verdicts = [];
+          finalResult.map((curResult) => {
+            verdicts.push(curResult.verdict);
+          });
+
+          if (verdicts.includes("CE")) user.stats["CECount"] += 1;
+          else if (verdicts.includes("MLE")) user.stats["MLECount"] += 1;
+          else if (verdicts.includes("TLE")) user.stats["TLECount"] += 1;
+          else if (verdicts.includes("RTE")) user.stats["RTECount"] += 1;
+          else if (verdicts.includes("AC")) user.stats["ACCount"] += 1;
+          else if (verdicts.includes("WA")) user.stats["WACount"] += 1;
+
+          user.stats["totalCount"] += 1;
+          user.stats[difficulty] += 1;
+
+          User.findOneAndUpdate({ _id: userId }, user, {
+            new: true,
+          })
+            .then((ress) => res.send(ress))
+            .catch((err) => res.send(err));
+        })
+        .catch((err) => res.status(404).json({ message: "User Not Found..." }));
+    })
+    .catch((err) => {
+      res.status(404).json({ message: "Problem Not Found..." });
+    });
+});
+
+router.get("/:userId", (req, res) => {
+  Submission.find({ userId: req.params.userId, verdict: "AC" })
+    .then((submissions) => {
+      let problemsTemp = [];
+      submissions.map((curSubmission) => {
+        if (!problemsTemp.includes(curSubmission.problemName))
+          problemsTemp.push(curSubmission.problemName);
+      });
+      Problem.find({ name: { $in: problemsTemp } })
+        .then((problems) => {
+          let tags = {};
+          problems.map((curProblem) => {
+            curProblem.tags.map((curTag) => {
+              if (tags[curTag]) tags[curTag] += 1;
+              else tags[curTag] = 1;
+            });
+          });
+
+          res.send(tags);
+        })
+        .catch((err) =>
+          res.status(404).json({ message: "Problem Not Found..." })
+        );
+    })
+    .catch((err) =>
+      res.status(404).json({ message: "Submissions Not Found..." })
+    );
+});
+
+router.get("/usersubmission/:userId", (req, res) => {
+  Submission.find({ userId: req.params.userId })
+    .then((submissions) => res.send(submissions))
+    .catch((err) => res.status(404).json({ message: "User Not Found..." }));
+});
+
+module.exports = router;
