@@ -34,9 +34,25 @@
 * Python 3
 
 ## Prerequisite
-> ### Docker Desktop
-> ### Node.js
++ Docker Desktop
++ Node.js
 
+## Env Variables
+
+Create a .env file in then root and add the following
+### Make Sure to connet to gmail api at google developer console
+```
+PORT = 5000
+MONGO_URI = your mongo url
+JWT_PRIVATE_KEY = your JWT token
+EMAIL_ID = your email Id 
+PASSWORD = password for email Id
+EMAIL_SECRET = your email secret
+CLIENT_ID = your client Id
+CLIENT_SECRET = your client secret
+REDIRECT_URI = https://developers.google.com/oauthplayground
+REFRESH_TOKEN = your refresh token
+```
 
 ## Setup Locally
 ### Make sure to install docker in your machine.
