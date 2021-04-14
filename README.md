@@ -24,8 +24,8 @@
 - [ ] Download Submissions
 - [ ] Two-factor authentication
 - [ ] OAuth login with Google, Facebook, and Github
-- [ ] Problem upvote and download
-- [ ] Specific blog for post and tutorials.
+- [ ] Problem upvotes and download
+- [ ] Specific blogs for posts and tutorials
 
 ## Supported Languages
 * C
