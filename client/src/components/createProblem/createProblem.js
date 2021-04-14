@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import ReactQuill from "react-quill";
+import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css"; // ES6
 import {
   Form,
@@ -14,15 +14,22 @@ import {
   faTrash,
   faPlus,
   faPaperPlane,
+  faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Spinner } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Tooltip from "@material-ui/core/Tooltip";
+import InfoIcon from "@material-ui/icons/Info";
+import IconButton from "@material-ui/core/IconButton";
 import "react-toastify/dist/ReactToastify.css";
 import "./createProblem.css";
+import mathquill4quill from "mathquill4quill";
+import "mathquill4quill/mathquill4quill.css";
+import TouchRipple from "@material-ui/core/ButtonBase/TouchRipple";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,6 +91,18 @@ const SampleTestcase = ({ i, input, output, setInput, setOutput }) => {
   );
 };
 
+const LightTooltip = withStyles((theme) => ({
+  arrow: {
+    color: "rgba(0, 0, 0, 0.83)",
+  },
+  tooltip: {
+    backgroundColor: "rgba(0, 0, 0, 0.83)",
+    color: "#fff",
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
+  },
+}))(Tooltip);
+
 const CreateProblem = () => {
   const [input, setInput] = useState([]);
   const [output, setOutput] = useState([]);
@@ -100,8 +119,32 @@ const CreateProblem = () => {
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
   const classes = useStyles();
+  const reactQuill = useRef();
 
-  const tags = ["DP", "Greedy", "Bruteforce"];
+  const tags = [
+    "Binary Search",
+    "Bitmasks",
+    "Bruteforce",
+    "Combinatorics",
+    "Constructive Algorithms",
+    "Data Structures",
+    "DFS and Similar",
+    "Divide and Conquer",
+    "Dynamic Programming",
+    "DSU",
+    "Flows",
+    "Games",
+    "Graphs",
+    "Greedy",
+    "Implementation",
+    "Math",
+    "Number Theory",
+    "Shortest Paths",
+    "Sortings",
+    "Ternery Search",
+    "Trees",
+    "Two Pointers",
+  ];
 
   const handleChange = (value) => {
     setProblemStatement(value);
@@ -173,11 +216,20 @@ const CreateProblem = () => {
       })
       .then((res) => {
         setLoadingSpinner(false);
-        console.log(res);
+        toast.success("Problem Submitted Successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       })
       .catch((err) => {
         setLoadingSpinner(false);
-        toast.error(err.response.data.message, {
+        const error = err.response ? err.response.data.message : err.message;
+        toast.error(error, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -189,20 +241,21 @@ const CreateProblem = () => {
       });
   };
 
-  const modules = {};
+  const modules = { formula: true };
   modules.toolbar = [
-    ["bold", "italic", "underline", "strike"], // toggled buttons
-    ["blockquote", "code-block"], // blocks
-    [{ header: 1 }, { header: 2 }], // custom ReactButton values
-    [{ list: "ordered" }, { list: "bullet" }], // lists
-    [{ script: "sub" }, { script: "super" }], // superscript/subscript
-    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-    [{ direction: "rtl" }], // text direction
-    [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-    [{ header: [1, 2, 3, 4, 5, 6, false] }], // header dropdown
-    [{ font: [] }], // font family
-    [{ align: [] }], // text align
-    ["clean"], // remove formatting
+    ["bold", "italic", "underline", "strike"],
+    ["blockquote", "code-block"],
+    ["formula"],
+    [{ header: 1 }, { header: 2 }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ script: "sub" }, { script: "super" }],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ direction: "rtl" }],
+    [{ size: ["small", false, "large", "huge"] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    [{ font: [] }],
+    [{ align: [] }],
+    ["clean"],
   ];
 
   const formats = [
@@ -229,8 +282,18 @@ const CreateProblem = () => {
     "video",
   ];
 
+  useEffect(() => {
+    const enableMathQuillFormulaAuthoring = mathquill4quill({ Quill });
+    enableMathQuillFormulaAuthoring(reactQuill.current);
+  }, []);
+
   return (
-    <div className="container" style={{ paddingTop: 70 + "px" }}>
+    <div
+      className="container"
+      style={{
+        paddingTop: 70 + "px",
+      }}
+    >
       <ToastContainer />
       <Form onSubmit={onFormSubmit} autoComplete="off">
         <Form.Group>
@@ -249,10 +312,25 @@ const CreateProblem = () => {
           />
         </Form.Group>
         <Form.Group>
-          <Form.Label style={{ fontFamily: "Yusei Magic", fontWeight: "bold" }}>
-            Problem Statement
-          </Form.Label>
+          <div>
+            <Form.Label
+              style={{ fontFamily: "Yusei Magic", fontWeight: "bold" }}
+            >
+              Problem Statement
+            </Form.Label>
+            <span style={{ float: "right" }}>
+              <FontAwesomeIcon icon={faInfoCircle} />{" "}
+              <a
+                target="_blank"
+                style={{ textDecoration: "none" }}
+                href="https://math.meta.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference"
+              >
+                Guide For Math Formulas
+              </a>
+            </span>
+          </div>
           <ReactQuill
+            ref={reactQuill}
             modules={modules}
             formats={formats}
             theme="snow"
@@ -369,19 +447,53 @@ const CreateProblem = () => {
           </Row>
         </Form.Group>
         <Form.Group>
-          <Form.File
-            style={{ fontFamily: "Yusei Magic", fontWeight: "bold" }}
-            type="file"
-            id="testcases"
-            label="Testcase File"
-            name="testcaseFile"
-            accept=".txt"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              setTestCaseFile(file);
-            }}
-            required
-          />
+          <div>
+            <Form.File
+              style={{
+                fontFamily: "Yusei Magic",
+                fontWeight: "bold",
+                display: "inline-block",
+              }}
+              type="file"
+              id="testcases"
+              label={
+                <>
+                  Testcase File &nbsp; &nbsp; &nbsp; &nbsp; [TestFile Format]{" "}
+                  <LightTooltip
+                    placement="right"
+                    title={
+                      <span
+                        style={{
+                          fontFamily: "philosopher",
+                          fontSize: "14px",
+                        }}
+                      >
+                        <p>Input</p>
+                        <p>1</p>
+                        <p>5</p>
+                        <p>1 2 3 4 5 6 7 8 9 10</p>
+                        <p>Output</p>
+                        <p>55</p>
+                      </span>
+                    }
+                    arrow
+                  >
+                    <IconButton aria-label="delete" color="black">
+                      <InfoIcon />
+                    </IconButton>
+                  </LightTooltip>
+                </>
+              }
+              name="testcaseFile"
+              accept=".txt"
+              onChange={(e) => {
+                const file = e.target.files[0];
+                setTestCaseFile(file);
+              }}
+              required
+            />
+            <span style={{ display: "inline-block" }}></span>
+          </div>
         </Form.Group>
         <Form.Group>
           <Form.File

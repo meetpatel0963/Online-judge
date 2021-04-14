@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+.msg {
+  font-family: 'Roboto', sans-serif;
+  opacity: .8;
+}
+.zen {
+    margin-top: 5rem;
+    width: 33%;
+    height: 33%;
+    position: relative;
+    animation-name: floating;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    transition-timing-function: ease-in;
+}
+@keyframes floating {
+    0%   {left:0px; top:20px;}
+    50%  {left:0px; top:0px;}
+    100% {left:0px; top:20px;}
+}

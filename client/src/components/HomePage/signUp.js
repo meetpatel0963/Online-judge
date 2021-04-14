@@ -74,7 +74,7 @@ const SignUp = () => {
   const [passwordError, setPasswordError] = useState("");
   const [description, setDescription] = useState("");
   const [verify, setVerify] = useState(false);
-  const [temp, setTemp] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const validateEmail = (e) => {
     const emailreg = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
@@ -96,7 +96,7 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setTemp(true);
+    setLoading(true);
     axios
       .post("http://localhost:5000/home/user", {
         firstName,
@@ -109,8 +109,9 @@ const SignUp = () => {
         setVerify(true);
       })
       .catch((err) => {
-        setTemp(false);
-        toast.error(err.response.data.message, {
+        setLoading(false);
+        const error = err.response ? err.response.data.message : err.message;
+        toast.error(error, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -239,7 +240,7 @@ const SignUp = () => {
               password.length === 0
             }
           >
-            {temp ? (
+            {loading ? (
               <CircularProgress size={"23px"} style={{ color: "white" }} />
             ) : (
               "Sign Up"

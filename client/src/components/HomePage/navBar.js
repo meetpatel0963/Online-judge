@@ -40,7 +40,8 @@ const navBar = () => {
         variant="dark"
       >
         <Navbar.Brand
-          href="#home"
+          as={link}
+          to="/"
           style={{
             fontFamily: "philosopher",
             fontWeight: "bold",
@@ -52,13 +53,15 @@ const navBar = () => {
           <Nav.Link as={link} to="/problemset" onSelect={handleSelect}>
             Problemset
           </Nav.Link>
-          <Nav.Link as={link} to="/createproblem" onSelect={handleSelect}>
-            Create Problem
-          </Nav.Link>
           {login ? (
-            <Nav.Link as={link} to="/mysubmission" onSelect={handleSelect}>
-              My Submissions
-            </Nav.Link>
+            <>
+              <Nav.Link as={link} to="/createproblem" onSelect={handleSelect}>
+                Create Problem
+              </Nav.Link>
+              <Nav.Link as={link} to="/mysubmission" onSelect={handleSelect}>
+                My Submissions
+              </Nav.Link>
+            </>
           ) : null}
         </Nav>
         <Form inline>

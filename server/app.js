@@ -18,8 +18,10 @@ connectDB();
 const app = express();
 
 // Body parser
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "50mb" }));
+app.use(
+  express.urlencoded({ extended: true, limit: "50mb", parameterLimit: 50000 })
+);
 
 // const corsOptions = {
 //   exposedHeaders: "x-auth-token",

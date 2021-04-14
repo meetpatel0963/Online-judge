@@ -20,8 +20,6 @@ router.post("/", auth, (req, res) => {
 
   let submission = new Submission(solution);
 
-  console.log(submission);
-
   Problem.findOne({
     name: req.body.problemName,
   })
@@ -66,17 +64,13 @@ router.post("/", auth, (req, res) => {
           else if (verdicts.includes("MLE")) submission.verdict = "MLE";
           else if (verdicts.includes("TLE")) submission.verdict = "TLE";
           else if (verdicts.includes("RTE")) submission.verdict = "RTE";
-          else if (verdicts.includes("AC")) submission.verdict = "AC";
           else if (verdicts.includes("WA")) submission.verdict = "WA";
-
-          console.log(submission);
+          else if (verdicts.includes("AC")) submission.verdict = "AC";
 
           if (op === "submit")
             submission
               .save()
-              .then(() => {
-                console.log("finalResult: ", finalResult);
-              })
+              .then(() => {})
               .catch((err) =>
                 res.status(500).json({ message: "Something Went Wrong!" })
               );
@@ -88,29 +82,36 @@ router.post("/", auth, (req, res) => {
     .catch((err) => res.status(404).json({ message: "Problem Not Found..." }));
 });
 
-router.put("/", auth, (req, res) => {
-  const problem = req.body.problem;
+router.put("/", auth, async (req, res) => {
+  const problemName = req.body.problemName;
   const finalResult = req.body.finalResult;
   const difficulty = req.body.difficulty;
+  let newProblem;
 
-  let newProblem = problem;
-  newProblem.countTotal += 1;
+  try {
+    newProblem = await Problem.findOne({ name: problemName });
+    newProblem.countTotal += 1;
 
-  let ok = true;
-  finalResult.map((curResult) => {
-    ok &= curResult.verdict === "AC";
-  });
+    let ok = true;
+    finalResult.map((curResult) => {
+      ok &= curResult.verdict === "AC";
+    });
 
-  if (ok) {
-    newProblem.countAC += 1;
+    if (ok) {
+      newProblem.countAC += 1;
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Something went wrong! Please try again!" });
   }
 
-  Problem.findOneAndUpdate({ name: problem.name }, newProblem, {
+  Problem.findOneAndUpdate({ name: problemName }, newProblem, {
     new: true,
   })
     .then((result) => {
       const userId = req.body.userId;
-      console.log(userId);
+
       User.findById(userId)
         .then((user) => {
           let verdicts = [];
@@ -122,8 +123,8 @@ router.put("/", auth, (req, res) => {
           else if (verdicts.includes("MLE")) user.stats["MLECount"] += 1;
           else if (verdicts.includes("TLE")) user.stats["TLECount"] += 1;
           else if (verdicts.includes("RTE")) user.stats["RTECount"] += 1;
-          else if (verdicts.includes("AC")) user.stats["ACCount"] += 1;
           else if (verdicts.includes("WA")) user.stats["WACount"] += 1;
+          else if (verdicts.includes("AC")) user.stats["ACCount"] += 1;
 
           user.stats["totalCount"] += 1;
           user.stats[difficulty] += 1;
@@ -137,6 +138,7 @@ router.put("/", auth, (req, res) => {
         .catch((err) => res.status(404).json({ message: "User Not Found..." }));
     })
     .catch((err) => {
+      console.log(1);
       res.status(404).json({ message: "Problem Not Found..." });
     });
 });

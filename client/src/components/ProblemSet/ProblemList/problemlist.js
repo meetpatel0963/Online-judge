@@ -14,9 +14,9 @@ const ProblemList = ({ problems, currentPage, pageSize }) => {
       </thead>
       <tbody style={{ fontSize: 18 + "px" }}>
         {problems.map((problem, i) => (
-          <tr key={problem._id}>
-            <td key={i}>{(currentPage - 1) * pageSize + i + 1}</td>
-            <td key={problem["name"]}>
+          <tr key={i}>
+            <td>{(currentPage - 1) * pageSize + i + 1}</td>
+            <td>
               <div style={{ textAlign: "left" }}>
                 <Link
                   style={{ textDecoration: "none" }}
@@ -26,17 +26,17 @@ const ProblemList = ({ problems, currentPage, pageSize }) => {
                 </Link>
               </div>
               <div style={{ fontSize: "14px", textAlign: "right" }}>
-                {problem["tags"].map((tag, i) => {
+                {problem["tags"].map((tag, index) => {
                   return [
                     <span>
                       {tag}
-                      {i < problem["tags"].length - 1 ? ", " : null}
+                      {index < problem["tags"].length - 1 ? ", " : null}
                     </span>,
                   ];
                 })}
               </div>
             </td>
-            <td key={problem["difficulty"]}>
+            <td>
               <div
                 style={{
                   marginLeft: "auto",

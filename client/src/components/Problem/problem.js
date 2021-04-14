@@ -11,6 +11,7 @@ import ResultTable from "./ResultTable/resultTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./problem.css";
+// import NothingHere from "../NothingHere/NothingHere";
 
 const Wrapper = styled.div`
   .Resizer {
@@ -77,6 +78,7 @@ const Problem = () => {
   const [input, setInput] = useState("");
   const [op, setOp] = useState("");
   const [flag, setFlag] = useState(false);
+  // const [problemDoesNotExists, setProblemDoesNotExists] = useState(false);
 
   const screenWidth = document.documentElement.clientWidth;
   const screenHeight = document.documentElement.clientHeight;
@@ -88,11 +90,13 @@ const Problem = () => {
     axios
       .get(`http://localhost:5000/home/problem/${problemName}`)
       .then((res) => {
+        // if (!res.data || res.data.length === 0) setProblemDoesNotExists(true);
         setProblem(res.data);
         setLoadingSpinner((prev) => !prev);
       })
       .catch((err) => {
-        toast.error(err.response.data.message, {
+        const error = err.response ? err.response.data.message : err.message;
+        toast.error(error, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -156,7 +160,7 @@ const Problem = () => {
               .put(
                 "http://localhost:5000/home/submission",
                 {
-                  problem,
+                  problemName,
                   finalResult: res.data.finalResult,
                   userId,
                   difficulty,
@@ -167,9 +171,12 @@ const Problem = () => {
                   },
                 }
               )
-              .then((result) => console.log("Result: ", result))
+              .then((result) => {})
               .catch((err) => {
-                toast.error(err.response.data.message, {
+                const error = err.response
+                  ? err.response.data.message
+                  : err.message;
+                toast.error(error, {
                   position: "top-right",
                   autoClose: 5000,
                   hideProgressBar: false,
@@ -195,7 +202,8 @@ const Problem = () => {
           setSubmitted((prev) => !prev);
         })
         .catch((err) => {
-          toast.error(err.response.data.message, {
+          const error = err.response ? err.response.data.message : err.message;
+          toast.error(error, {
             position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
@@ -245,7 +253,6 @@ const Problem = () => {
 
   const handleSelect = (eventKey, event) => {
     event.preventDefault();
-    console.log(eventKey);
     setLang(langs[eventKey]);
   };
 

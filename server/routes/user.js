@@ -21,11 +21,9 @@ async function sendMail(toEmail, link) {
       CLIENT_SECRET,
       REDIRECT_URI
     );
-
     oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
     const accessToken = await oAuth2Client.getAccessToken();
-    console.log("accessToken: ", accessToken);
     const transport = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -98,7 +96,6 @@ router.post("/", async (req, res) => {
     process.env.EMAIL_SECRET,
     (err, token) => {
       // NodeMailer
-      console.log(token);
       host = req.get("host");
 
       const toEmail = req.body.email;
@@ -106,7 +103,6 @@ router.post("/", async (req, res) => {
 
       sendMail(toEmail, link)
         .then(async (result) => {
-          console.log("Result: ", result);
           try {
             await user.save();
             res.send(user);
@@ -114,22 +110,15 @@ router.post("/", async (req, res) => {
             res.status(500).json({ message: "Something Went Wrong!" });
           }
         })
-        .catch((error) => console.log("Error: ", error.message));
+        .catch((error) => {});
     }
   );
 });
 
 router.get("/verify/:token", async (req, res) => {
-  console.log(req.protocol + "://" + req.get("host"));
-  console.log("http://" + host);
-  console.log(req.params.token);
   if (req.protocol + "://" + req.get("host") === "http://" + host) {
-    console.log("Domain is matched. Information is from Authentic email");
     try {
       const decoded = jwt.verify(req.params.token, process.env.EMAIL_SECRET);
-      console.log(decoded);
-      console.log("email is verified");
-      console.log("ID", decoded.user._id);
       await User.updateOne({ _id: decoded.user._id }, { confirmed: true });
     } catch (ex) {
       res.status(500).json({ message: "Something Went Wrong!" });

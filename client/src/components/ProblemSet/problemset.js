@@ -15,7 +15,7 @@ const ProblemSet = () => {
   const [loading, setLoading] = useState(true);
   const [allProblems, setAllProblems] = useState([]);
   const [currentFilter, setCurrentFilter] = useState([]);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [didMount, setDidMount] = useState(false);
@@ -61,23 +61,16 @@ const ProblemSet = () => {
       .get("http://localhost:5000/home/problem")
       .then((res) => {
         let temp = res.data;
-        temp.map((problem, i) => {
-          problem["ratio"] = problem.countAC / problem.countTotal;
-          problem["index"] = i;
-        });
-
-        temp.sort((p1, p2) => {
-          return p1.ratio < p2.ratio ? -1 : p1.ratio > p2.ratio ? 1 : 0;
-        });
 
         temp.map((problem, i) => {
-          const percentage = ((i + 1) / temp.length) * 100;
-          problem["difficulty"] =
-            percentage > 70 ? "Hard" : percentage > 40 ? "Medium" : "Easy";
-        });
-
-        temp.sort((p1, p2) => {
-          return p1.index < p2.index ? -1 : p1.index > p2.index ? 1 : 0;
+          if (problem.countTotal == 0) {
+            problem["difficulty"] = "Hard";
+          } else {
+            let ratio = problem.countAC / problem.countTotal;
+            if (ratio > 0.7) problem["difficulty"] = "Easy";
+            else if (ratio > 0.3) problem["difficulty"] = "Medium";
+            else problem["difficulty"] = "Hard";
+          }
         });
 
         let curTags = [];
@@ -92,7 +85,8 @@ const ProblemSet = () => {
         setDidMount(true);
       })
       .catch((err) => {
-        toast.error(err.response.data.message, {
+        const error = err.response ? err.response.data.message : err.message;
+        toast.error(error, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,

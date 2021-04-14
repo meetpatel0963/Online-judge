@@ -9,6 +9,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { red } from "@material-ui/core/colors";
 import EmailIcon from "@material-ui/icons/Email";
 import { Chart } from "react-google-charts";
@@ -20,7 +21,7 @@ import "./dashboard.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 600,
+    width: 650,
   },
   media: {
     height: 0,
@@ -39,6 +40,23 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
+const CustomCard = ({ child }) => {
+  const classes = useStyles();
+  return (
+    <Card
+      className={classes.root}
+      style={{
+        height: "300px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      {child}
+    </Card>
+  );
+};
 
 const Dashboard = () => {
   const classes = useStyles();
@@ -74,7 +92,10 @@ const Dashboard = () => {
               setTagsData(tagsDataTemp);
             })
             .catch((err) => {
-              toast.error(err.response.data.message, {
+              const error = err.response
+                ? err.response.data.message
+                : err.message;
+              toast.error(error, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -87,7 +108,8 @@ const Dashboard = () => {
         }
       })
       .catch((err) => {
-        toast.error(err.response.data.message, {
+        const error = err.response ? err.response.data.message : err.message;
+        toast.error(error, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -171,10 +193,12 @@ const Dashboard = () => {
           <div className="chart1">
             <Card className={classes.root}>
               <Chart
-                width={"500px"}
-                height={"300px"}
+                width={"800px"}
+                height={"400px"}
                 chartType="PieChart"
-                loader={<div>Loading Chart</div>}
+                loader={
+                  <CustomCard child={<CircularProgress color="secondary" />} />
+                }
                 data={submissionData}
                 options={{
                   title: "Verdicts of " + user.firstName + " " + user.lastName,
@@ -192,10 +216,12 @@ const Dashboard = () => {
           <div className="chart2">
             <Card className={classes.root}>
               <Chart
-                width={"500px"}
-                height={"300px"}
+                width={"800px"}
+                height={"400px"}
                 chartType="PieChart"
-                loader={<div>Loading Chart</div>}
+                loader={
+                  <CustomCard child={<CircularProgress color="secondary" />} />
+                }
                 data={difficultyData}
                 options={{
                   title: "Levels of " + user.firstName + " " + user.lastName,
@@ -213,13 +239,19 @@ const Dashboard = () => {
           <div className="chart3">
             <Card
               className={classes.root}
-              style={{ padding: 20 + "px", marginBottom: 20 + "px" }}
+              style={{
+                padding: 20 + "px",
+                marginBottom: 20 + "px",
+                width: 750 + "px",
+              }}
             >
               <Chart
-                width={"500px"}
-                height={"300px"}
+                width={"800px"}
+                height={"450px"}
                 chartType="PieChart"
-                loader={<div>Loading Chart</div>}
+                loader={
+                  <CustomCard child={<CircularProgress color="secondary" />} />
+                }
                 data={tagsData}
                 options={{
                   title: "Tags of " + user.firstName + " " + user.lastName,
@@ -237,17 +269,9 @@ const Dashboard = () => {
         </div>
       ) : (
         <div className="noname">
-          <Card
-            className={classes.root}
-            style={{
-              height: "300px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <h5> You have not submitted anything yet!! </h5>
-          </Card>
+          <CustomCard
+            child={<h5> You have not submitted anything yet!! </h5>}
+          />
         </div>
       )}
     </div>

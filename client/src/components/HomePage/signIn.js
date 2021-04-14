@@ -17,6 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { AuthContext } from "../../authContext";
 import Particles from "react-tsparticles";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -60,12 +61,14 @@ const SignIn = () => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const appContext = useContext(AuthContext);
   const { login, setLogin } = appContext;
 
   const handleSignIn = (e) => {
     e.preventDefault();
+    setLoading(true);
     axios
       .post("http://localhost:5000/home/auth", {
         email,
@@ -79,7 +82,9 @@ const SignIn = () => {
         setLogin(true);
       })
       .catch((err) => {
-        toast.error(err.response.data.message, {
+        setLoading(false);
+        const error = err.response ? err.response.data.message : err.message;
+        toast.error(error, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -274,7 +279,11 @@ const SignIn = () => {
                 color="primary"
                 className={classes.submit}
               >
-                Sign In
+                {loading ? (
+                  <CircularProgress size={"23px"} style={{ color: "white" }} />
+                ) : (
+                  "Sign In"
+                )}
               </Button>
               <Grid container>
                 <Grid item>

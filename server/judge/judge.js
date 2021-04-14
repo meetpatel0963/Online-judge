@@ -6,7 +6,7 @@ const { default: PQueue } = require("p-queue");
 const queue = new PQueue({ concurrency: 1 });
 
 let PATH_INIT = path.join(
-  "C:/Users/Meet Patel/Desktop/Online-judge/Online-judge/server",
+  "C:/Users/Meet Patel/Desktop/Projects/Online-judge/Online-judge/server",
   "/submissions/"
 );
 
@@ -29,8 +29,6 @@ const test = function (problem, submission, op, input, callback) {
   const testfileName = PATH + "testcase.txt";
   const outputfileName = PATH + "output.txt";
   const timeMemoryfileName = PATH + "timeMemory.txt";
-
-  console.log(op);
 
   if (op === "customInput") allTestcases = [{ input: input, output: "" }];
   else if (op === "runcode") allTestcases = [...problem.sampleTestcase];
@@ -57,7 +55,6 @@ const test = function (problem, submission, op, input, callback) {
       if (err) next(null, err);
       fs.writeFile(filename, code, (err) => {
         if (err) console.log(err);
-        console.log("Solution file created successfully.");
         next(null, null);
       });
     },
@@ -67,14 +64,11 @@ const test = function (problem, submission, op, input, callback) {
         allTestcases,
         1,
         function (curTestcase, cb) {
-          console.log("curTestcase : ", curTestcase);
-
           async.waterfall([
             function (next) {
               if (err) next(null, err);
               fs.writeFile(testfileName, curTestcase.input, (err) => {
                 if (err) console.log(err);
-                console.log("Testcase file created successfully.");
                 next(null, null);
               });
             },
@@ -109,12 +103,7 @@ const test = function (problem, submission, op, input, callback) {
                   .toString()
                   .trim();
 
-                // console.log("expectedOutput : ", expectedOutput);
-                // console.log("actualOutput : ", actualOutput);
-                // console.log("timeMemoryOutput : ", timeMemoryOutput);
-
                 let arr = timeMemoryOutput.split("\n");
-                console.log(arr);
                 const time = arr.slice(-2)[0],
                   memory = arr.slice(-1)[0];
 
@@ -145,7 +134,6 @@ const test = function (problem, submission, op, input, callback) {
                   curResult.AC = true;
                 else if (op !== "customInput") curResult.WA = true;
 
-                console.log(actualOutput, expectedOutput);
                 result.push(curResult);
                 cb();
               } catch (err) {

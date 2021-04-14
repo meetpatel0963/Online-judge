@@ -7,14 +7,16 @@ import SubmissionList from "./SubmissionList/submissionlist";
 import "./mySubmission.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// import NothingHere from "../NothingHere/NothingHere";
 
 const MySubmission = () => {
   const [submissions, setSubmissions] = useState([]);
   const [allSubmissions, setAllSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [pageSize, setPageSize] = useState(20);
+  const [pageSize, setPageSize] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const [didMount, setDidMount] = useState(false);
+  const [submittedNothing, setSubmittedNothing] = useState(false);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -38,12 +40,14 @@ const MySubmission = () => {
     axios
       .get(`http://localhost:5000/home/submission/usersubmission/${userId}`)
       .then((res) => {
-        console.log(res.data);
+        // if (!res.data || res.data.length === 0) setSubmittedNothing(true);
         setAllSubmissions(res.data);
+
         setDidMount(true);
       })
       .catch((err) => {
-        toast.error(err.response.data.message, {
+        const error = err.response ? err.response.data.message : err.message;
+        toast.error(error, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -62,7 +66,14 @@ const MySubmission = () => {
     }
   }, [currentPage, didMount]);
 
-  return (
+  return submittedNothing ? (
+    <>
+      <div className="spinner">
+        <BeatLoader color={"#343a40"} size={30} loading={loading} />
+      </div>
+      <NothingHere />
+    </>
+  ) : (
     <div>
       <div className="container" style={{ paddingTop: 70 + "px" }}>
         <ToastContainer />

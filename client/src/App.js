@@ -11,6 +11,7 @@ import NavBar from "./components/HomePage/navBar";
 import Verify from "./components/HomePage/verify";
 import MySubmission from "./components/MySubmission/mySubmission";
 import NotFound from "./components/notFound.js";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
@@ -19,11 +20,11 @@ const App = () => {
       <Switch>
         <Route exact path="/problemset" component={ProblemSet} />
         <Route exact path="/problem/:name" component={Problem} />
-        <Route exact path="/createproblem" component={CreateProblem} />
+        <ProtectedRoute exact path="/createproblem" component={CreateProblem} />
         <Route exact path="/signIn" component={SignIn} />
         <Route exact path="/signUp" component={SignUp} />
-        <Route exact path="/dashboard" component={Dashboard} />
-        <Route exact path="/mysubmission" component={MySubmission} />
+        <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+        <ProtectedRoute exact path="/mysubmission" component={MySubmission} />
         <Route exact path="/verify" component={Verify} />
         <Route exact path="/not-found" component={NotFound} />
         <Redirect from="/" exact to="/problemset" />

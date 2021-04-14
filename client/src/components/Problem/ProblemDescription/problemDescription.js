@@ -4,7 +4,7 @@ import { faCode } from "@fortawesome/free-solid-svg-icons";
 
 const ProblemDescription = ({ problem }) => {
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <div className="problem">
         <div className="problename">
           <div className="item1">
@@ -22,7 +22,11 @@ const ProblemDescription = ({ problem }) => {
         <hr className="hr" />
         <div
           className="statement"
-          dangerouslySetInnerHTML={{ __html: problem.statement }}
+          dangerouslySetInnerHTML={{
+            __html: problem.statement
+              ? problem.statement.replace(/&nbsp;/g, " ")
+              : null,
+          }}
         ></div>
       </div>
       <div>

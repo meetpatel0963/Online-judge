@@ -31,7 +31,7 @@ const upload = multer({
 ]);
 
 router.post("/", auth, (req, res) => {
-  upload(req, res, (err) => {
+  upload(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
       return res.status(400).json({ message: err.message });
     } else if (err) {
@@ -39,23 +39,45 @@ router.post("/", auth, (req, res) => {
       return res.status(400).json({ message: "Upload Failed. Try Again!!" });
     }
 
+    try {
+      const problem = await Problem.findOne({ name: req.body.problemName });
+      if (problem)
+        return res
+          .status(409)
+          .json({ message: "Problem with given name already exists!" });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "Something Went Wrong! Try Again!!!" });
+    }
+
     let testCases = req.files.testcaseFile[0].buffer.toString();
     const solution = req.files.solutionFile[0].buffer.toString();
 
+    let testLines = testCases.split("\n");
+    for (let i = 0; i < testLines.length; i++) {
+      testLines[i] = testLines[i].replace(/\r/, "").trim();
+    }
+
+    testCases = testLines.join("\n");
     testCases = testCases.split("Input").slice(1);
 
     let systemTestcase = [];
 
-    testCases.forEach((curTest) => {
-      const temp = curTest.split("Output");
-      const curInput = temp[0].trim().replace(/[\r]+/gm, ""),
-        curOutput = temp[1].trim().replace(/[\r]+/gm, "");
+    try {
+      testCases.forEach((curTest) => {
+        const temp = curTest.split("Output");
+        const curInput = temp[0].trim().replace(/[\r]+/gm, ""),
+          curOutput = temp[1].trim().replace(/[\r]+/gm, "");
 
-      systemTestcase.push({
-        input: curInput,
-        output: curOutput,
+        systemTestcase.push({
+          input: curInput,
+          output: curOutput,
+        });
       });
-    });
+    } catch (error) {
+      return res.status(400).json({ message: "Incorrect TestFile Format!" });
+    }
 
     const problem = new Problem({
       name: req.body.problemName,
@@ -84,7 +106,6 @@ router.post("/", auth, (req, res) => {
       let flag = false;
 
       result.every((curResult) => {
-        console.log(curResult);
         let verdict;
         for (key in curResult) {
           if (curResult[key] === true) {
