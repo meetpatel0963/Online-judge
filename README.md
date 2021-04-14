@@ -1,5 +1,5 @@
 # Online-Judge
-> #### An onlinejudge system based on Node and React (MERN Stack).
+> #### An Online-judge system based on Node and React (MERN Stack).
 
 ## Features
 - [x] Authentication and Authorization (includes Email verification)
