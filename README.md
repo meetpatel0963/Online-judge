@@ -40,7 +40,7 @@
 ## Env Variables
 
 Create a .env file in then root and add the following
-### Make Sure to connet to gmail api at google developer console
+### Make Sure to connect to gmail api at google developer console
 ```
 PORT = 5000
 MONGO_URI = your mongo url
