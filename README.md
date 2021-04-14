@@ -68,15 +68,15 @@ npm start
 🎉 And that's it! You will now be able to visit <a href="http://localhost:3000/">http://localhost:3000/</a> URL and see your application up and running.
 
 ## Snapshots
-![SignIn]('./images/signin.png')
-![SignUp]('./images/signup.png')
-![Problem]('./images/problem.png')
-![Results]('./images/results.png')
-![My Submission]('./images/mysubmission.png')
-![Modal]('./images/modal.png')
-![Dashboard]('./images/dashboard1.png')
-![Dashboard]('./images/dashboard2.png')
-![Tags]('./images/tagfilter.png')
+![SignIn](./images/Signin.png)
+![SignUp](./images/Signup.png)
+![Problem](./images/Problem.png)
+![Results](./images/Results.png)
+![My Submission](./images/Mysubmission.png)
+![Modal](./images/Modal.png)
+![Dashboard](./images/Dashboard1.png)
+![Dashboard](./images/Dashboard2.png)
+![Tags](./images/Tagfilter.png)
 
 
 ## Thanks
