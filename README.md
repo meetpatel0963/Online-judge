@@ -68,7 +68,7 @@ npm start
 🎉 And that's it! You will now be able to visit <a href="http://localhost:3000/">http://localhost:3000/</a> URL and see your application up and running.
 
 ## Snapshots
-![SignIn]('./images/signin.png')
+![]('./images/signin.png')
 ![SignUp]('./images/signup.png')
 ![Problem]('./images/problem.png')
 ![Results]('./images/results.png')
