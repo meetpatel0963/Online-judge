@@ -16,7 +16,7 @@ const ProblemDescription = ({ problem }) => {
             &nbsp;
             {problem.name}
           </div>
-          <h6 className="item2">Time : {problem.time} ms</h6>
+          <h6 className="item2">Time : {problem.time} Sec</h6>
           <h6 className="item3">Memory : {problem.memory} MB</h6>
         </div>
         <hr className="hr" />

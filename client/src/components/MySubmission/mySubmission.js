@@ -7,7 +7,8 @@ import SubmissionList from "./SubmissionList/submissionlist";
 import "./mySubmission.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import NothingHere from "../NothingHere/NothingHere";
+import NothingHere from "../NothingHere/NothingHere";
+import { BACK_SERVER_URL } from "../../config/config";
 
 const MySubmission = () => {
   const [submissions, setSubmissions] = useState([]);
@@ -38,9 +39,9 @@ const MySubmission = () => {
     const userId = parseJwt(localStorage.getItem("x-auth-token"))._id;
 
     axios
-      .get(`http://localhost:5000/home/submission/usersubmission/${userId}`)
+      .get(`${BACK_SERVER_URL}/home/submission/usersubmission/${userId}`)
       .then((res) => {
-        // if (!res.data || res.data.length === 0) setSubmittedNothing(true);
+        if (!res.data || res.data.length === 0) setSubmittedNothing(true);
         setAllSubmissions(res.data);
 
         setDidMount(true);

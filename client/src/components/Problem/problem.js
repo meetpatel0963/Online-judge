@@ -11,7 +11,8 @@ import ResultTable from "./ResultTable/resultTable";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./problem.css";
-// import NothingHere from "../NothingHere/NothingHere";
+import NothingHere from "../NothingHere/NothingHere";
+import { BACK_SERVER_URL } from "../../config/config";
 
 const Wrapper = styled.div`
   .Resizer {
@@ -78,7 +79,7 @@ const Problem = () => {
   const [input, setInput] = useState("");
   const [op, setOp] = useState("");
   const [flag, setFlag] = useState(false);
-  // const [problemDoesNotExists, setProblemDoesNotExists] = useState(false);
+  const [problemDoesNotExists, setProblemDoesNotExists] = useState(false);
 
   const screenWidth = document.documentElement.clientWidth;
   const screenHeight = document.documentElement.clientHeight;
@@ -88,10 +89,10 @@ const Problem = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/home/problem/${problemName}`)
+      .get(`${BACK_SERVER_URL}/home/problem/${problemName}`)
       .then((res) => {
-        // if (!res.data || res.data.length === 0) setProblemDoesNotExists(true);
-        setProblem(res.data);
+        if (!res.data || res.data.length === 0) setProblemDoesNotExists(true);
+        else setProblem(res.data);
         setLoadingSpinner((prev) => !prev);
       })
       .catch((err) => {
@@ -137,7 +138,7 @@ const Problem = () => {
 
       axios
         .post(
-          "http://localhost:5000/home/submission",
+          `${BACK_SERVER_URL}/home/submission`,
           {
             problemName,
             code,
@@ -158,7 +159,7 @@ const Problem = () => {
           if (op === "submit") {
             axios
               .put(
-                "http://localhost:5000/home/submission",
+                `${BACK_SERVER_URL}/home/submission`,
                 {
                   problemName,
                   finalResult: res.data.finalResult,
@@ -256,7 +257,14 @@ const Problem = () => {
     setLang(langs[eventKey]);
   };
 
-  return (
+  return problemDoesNotExists ? (
+    <>
+      <div className="spinner">
+        <BeatLoader color={"#343a40"} size={30} loading={loading} />
+      </div>
+      <NothingHere />
+    </>
+  ) : (
     <div className="container">
       <ToastContainer />
       <Wrapper>

@@ -16,6 +16,7 @@ import { Chart } from "react-google-charts";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BACK_SERVER_URL } from "../../config/config";
 
 import "./dashboard.css";
 
@@ -77,12 +78,12 @@ const Dashboard = () => {
     const userId = parseJwt(localStorage.getItem("x-auth-token"))._id;
 
     axios
-      .get(`http://localhost:5000/home/user/${userId}`)
+      .get(`${BACK_SERVER_URL}/home/user/${userId}`)
       .then((res) => {
         if (mounted) {
           setUser(res.data);
           axios
-            .get(`http://localhost:5000/home/submission/${userId}`)
+            .get(`${BACK_SERVER_URL}/home/submission/${userId}`)
             .then((tags) => {
               let tagsDataTemp = [["Tag", "Count"]];
               Object.keys(tags.data).map((curTag) => {

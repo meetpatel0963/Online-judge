@@ -18,6 +18,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import "react-toastify/dist/ReactToastify.css";
+import { BACK_SERVER_URL } from "../../config/config";
 
 function Copyright() {
   return (
@@ -98,7 +99,7 @@ const SignUp = () => {
     e.preventDefault();
     setLoading(true);
     axios
-      .post("http://localhost:5000/home/user", {
+      .post(`${BACK_SERVER_URL}/home/user`, {
         firstName,
         lastName,
         email,

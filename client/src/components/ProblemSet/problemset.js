@@ -9,6 +9,7 @@ import { BeatLoader } from "react-spinners";
 import "./problemset.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BACK_SERVER_URL } from "../../config/config";
 
 const ProblemSet = () => {
   const [problems, setProblems] = useState([]);
@@ -58,7 +59,7 @@ const ProblemSet = () => {
 
   useLayoutEffect(() => {
     axios
-      .get("http://localhost:5000/home/problem")
+      .get(`${BACK_SERVER_URL}/home/problem`)
       .then((res) => {
         let temp = res.data;
 

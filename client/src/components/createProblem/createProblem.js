@@ -30,6 +30,7 @@ import "./createProblem.css";
 import mathquill4quill from "mathquill4quill";
 import "mathquill4quill/mathquill4quill.css";
 import TouchRipple from "@material-ui/core/ButtonBase/TouchRipple";
+import { BACK_SERVER_URL } from "../../config/config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -209,7 +210,7 @@ const CreateProblem = () => {
     const token = localStorage.getItem("x-auth-token");
 
     axios
-      .post("http://localhost:5000/home/createProblem", formData, {
+      .post(`${BACK_SERVER_URL}/home/createProblem`, formData, {
         headers: {
           "x-auth-token": token,
         },

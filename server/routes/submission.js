@@ -174,6 +174,7 @@ router.get("/:userId", (req, res) => {
 
 router.get("/usersubmission/:userId", (req, res) => {
   Submission.find({ userId: req.params.userId })
+    .sort({ date: -1 })
     .then((submissions) => res.send(submissions))
     .catch((err) => res.status(404).json({ message: "User Not Found..." }));
 });
