@@ -24,7 +24,7 @@
 - [ ] Download Submissions
 - [ ] Two-factor authentication
 - [ ] OAuth login with Google, Facebook, and Github
-- [ ] Problem upvotes and download
+- [ ] Problem upvotes and downvotes
 - [ ] Specific blogs for posts and tutorials
 
 ## Supported Languages
@@ -73,9 +73,10 @@ npm start
 ### Server
 ```bash
 cd server
+mkdir submissions
 npm install
 cd docker
-docker build -t <Your_Image_Name> .
+docker build -t <Image_Name> .
 cd ..
 npm start
 ```
