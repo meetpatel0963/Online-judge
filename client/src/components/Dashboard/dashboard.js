@@ -142,10 +142,11 @@ const Dashboard = () => {
           ]);
         } else {
           const newKeyName = keyName.split("Count")[0];
-          submissionDataTemp.push([
-            newKeyName.toUpperCase(),
-            user.stats[keyName],
-          ]);
+          if(newKeyName !== "total")
+            submissionDataTemp.push([
+              newKeyName.toUpperCase(),
+              user.stats[keyName],
+            ]);
         }
       });
 
