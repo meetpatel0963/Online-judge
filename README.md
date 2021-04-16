@@ -72,6 +72,7 @@ npm start
 ```
 
 ### Server
+#### Change PATH_INIT=<Path to Server Directory> in server/judge/judge.js
 ```bash
 cd server
 mkdir submissions
