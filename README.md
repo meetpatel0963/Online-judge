@@ -64,7 +64,7 @@ git clone https://github.com/jojozhuang/online-judge-mean.git
 cd online-judge
 ```
 ### Client
-#### Change BACK_SERVER_URL="http://localhost:5000" in client/config/config.js
+#### Change BACK_SERVER_URL="http://localhost:5000" in client/src/config/config.js
 ```bash
 cd client
 npm install
