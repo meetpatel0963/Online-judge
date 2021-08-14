@@ -1,0 +1,33 @@
+.result-table-container{
+    padding: 30px 60px;
+    margin: 40px 160px;
+    width: 70% !important;
+    background-color: rgba(240, 225, 144, 0.877) !important;
+    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.result-table-header{
+    font-weight: 600 !important;
+    font-size: larger !important;
+    color: rgb(31, 6, 131) !important;
+}
+
+.result-table-content{
+    font-weight: 500 !important;
+    font-size: medium !important;
+}
+
+.result-table-accepted-icon{
+    margin-left: 10px;
+    margin-bottom: -6px;
+    transform: scale(1.2);
+    color: rgba(10, 184, 10, 0.747);
+}
+
+.result-table-error-icon{
+    margin-left: 10px;
+    margin-bottom: -6px;
+    transform: scale(1.2);
+    color: rgba(233, 25, 25, 0.849);
+}

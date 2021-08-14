@@ -1,0 +1,29 @@
+.verify-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 50px);
+}
+
+.verify-card {
+  padding: 100px;
+  background-color: #d4124db7;
+  color: white;
+}
+
+.verify-title{
+    text-align: center;
+    font-weight: 600;
+    font-size: x-large;
+}
+
+.verify-icon{
+    margin-right: 20px;
+    transform: scale(2.0);
+    color: rgb(18, 179, 18);
+}
+
+.verify-content{
+    font-weight: 400;
+    font-size: larger;
+}

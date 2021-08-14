@@ -1,0 +1,33 @@
+.usersubmission-container{
+    height: calc(100vh - 50px);
+    width: 80%;
+    display: flex;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.usersubmission-spinner{
+    display: block;
+    position: fixed;
+    z-index: 2; 
+    top: 50%;
+    right: 50%;
+}
+
+.usersubmission-modal-title{
+    font-weight: 700;
+    font-size: larger;
+}
+
+.usersubmission-modal-details{
+    font-weight: 600;
+    font-size: medium;
+}
+
+.usersubmission-modal-username{
+    text-decoration: none;
+    margin-left: 5px;
+    color: rgb(117, 2, 117);
+}
+

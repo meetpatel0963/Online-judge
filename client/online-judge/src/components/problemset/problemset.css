@@ -1,0 +1,27 @@
+.problemset-container{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.problemset-left{
+    flex: 1;
+}
+
+.problemset-right{
+    margin: 0px 50px 0px 50px;
+    flex: 4;
+}
+
+.problem-searchbar{
+    margin-bottom: 10px;
+}
+
+.problemset-spinner{
+    display: block;
+    position: fixed;
+    z-index: 2; 
+    top: 50%;
+    right: 50%;
+}

@@ -1,0 +1,101 @@
+.problem-loading-spinner {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  top: 50%;
+  right: 50%;
+}
+
+.problem-container{
+  padding: 20px;
+  margin: 40px 200px;
+  background-color: rgba(238, 241, 241, 0.829);
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.problem-title-wrapper{
+    text-align: center;
+}
+
+.problem-title{
+    font-weight: 700;
+    font-size: xx-large;
+    color: #03201e;
+}
+
+.problem-code-icon{
+    color: #0b837b;
+    margin: 0px 10px;
+}
+
+.problem-details{
+    display: flex;
+    justify-content: center;
+}
+
+.problem-details-item{
+    margin: 5px;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.problem-statement-wrapper, .problem-sample-test-wrapper{
+    margin: 30px 50px;
+    padding: 20px;
+    background-color: white;
+    -webkit-box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.72);
+    box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.72);
+}
+
+.problem-statement{
+    word-break: break-word;
+    padding: 10px 50px;
+    /* word-wrap: break-word; */
+}
+
+.problem-sample-test-wrapper{
+    padding: 30px 0px;
+}
+
+.problem-sample-test{
+    display: flex;
+    padding: 10px 0px;
+    margin: auto;
+    width: 90%;
+    word-break: break-word;
+    justify-content: space-around;;
+    /* word-wrap: break-word; */
+}
+
+.problem-sample-test-input, .problem-sample-test-output{
+    padding: 20px;
+    width: 40%;
+    background-color: white;
+    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.problem-sample-test-input-title, .problem-sample-test-output-title, .problem-sample-test-explanation-title{
+    font-weight: 600;
+    font-size: large;
+}
+
+.problem-sample-test-input-content, .problem-sample-test-output-content, .problem-sample-test-explanation-content{
+    font-size: 15px;
+    word-break: break-word;
+}
+
+.problem-sample-test-explanation{
+    margin: 30px 72px;
+    padding: 20px;
+    -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+
+
+
+
+
+

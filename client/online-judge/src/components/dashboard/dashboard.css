@@ -1,0 +1,97 @@
+.dashboard-container {
+  height: 100%;
+  margin: 50px 100px 0px 100px;
+  display: flex;
+}
+
+.dashboard-spinner {
+  display: block;
+  position: fixed;
+  z-index: 2;
+  top: 50%;
+  right: 50%;
+}
+
+.dashboard-left {
+  flex: 1;
+  padding: 20px;
+  height: 510px;
+  background-color: white;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+}
+
+.dashboard-right{
+  flex: 3;
+}
+
+.dashboard-top-right {
+  height: fit-content;
+  background-color: white;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  margin-left: 40px;
+}
+
+.dashboard-bottom-right {
+  display: flex;
+  height: fit-content;
+  padding-top: 20px;
+  background-color: white;
+  -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
+  margin: 30px 0px 0px 40px;
+}
+
+.dashboard-top {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.dashboard-top-title {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+.dashboard-username {
+  font-weight: 600;
+}
+
+.dashboard-user-title {
+  font-weight: 300;
+}
+
+.dashboard-bottom {
+  margin-top: 20px;
+}
+
+.dashboard-content-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(175, 170, 170);
+}
+
+.dashboard-info {
+  display: flex;
+  align-items: center;
+  margin: 25px 0px;
+  color: #444;
+}
+
+.dashboard-icon {
+  margin-top: 3px;
+  font-size: 16px !important;
+}
+
+.dashboard-info-title {
+  margin-left: 10px;
+}
+

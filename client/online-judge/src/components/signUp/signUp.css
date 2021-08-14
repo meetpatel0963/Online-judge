@@ -1,0 +1,30 @@
+.signup-container {
+  height: calc(100vh - 80px);
+}
+
+.signup-paper {
+  padding: 50px;
+  height: 500px;
+  width: 400px;
+  margin-top: 30px;
+}
+
+.signup-title {
+  font-weight: 800;
+  font-size: x-large;
+  margin: 0px;
+}
+
+.signup-avatar {
+  background-color: #1bbd7e !important;
+}
+
+.signup-radio-btn {
+  margin-top: 15px !important;
+  width: 100%;
+}
+
+.signup-contact{
+  margin-top: 20px; 
+}
+

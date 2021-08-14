@@ -1,0 +1,31 @@
+.nocontent-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - 50px);
+}
+
+.nocontent-card {
+  padding: 50px;
+  border-radius: 50px;
+  background-color: #069b9bb7;
+  color: white;
+}
+
+.nocontent-title{
+    text-align: center;
+    font-weight: 600;
+    font-size: x-large;
+}
+
+.nocontent-icon{
+    margin-right: 20px;
+    transform: scale(2.0);
+    color: rgb(18, 179, 18);
+}
+
+.nocontent-content{
+    font-weight: 400;
+    font-size: larger;
+    text-align: center;
+}

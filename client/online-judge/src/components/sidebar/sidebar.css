@@ -1,0 +1,35 @@
+.sidebar{
+    height: 100%;
+    background-color: rgb(251, 251, 255);
+}
+
+.sidebar-wrapper{
+    padding: 20px;
+    color: #555;
+}
+
+.sidebar-menu{
+    margin-bottom: 10px;
+}
+
+.sidebar-title{
+    font-size: 16px;
+    color: rgb(29, 25, 25);
+}
+
+.sidebar-list{
+    list-style: None;
+    padding: 5px;
+}
+
+.sidebarL-list-item{
+    cursor: pointer;
+    display: flex;
+    border-radius: 10px;
+}
+
+.sidebarL-list-item.active, 
+.sidebar-list-item:hover{
+    background-color: rgb(240,240, 255);
+}
+
