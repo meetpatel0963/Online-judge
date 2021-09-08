@@ -26,8 +26,7 @@ export default function NavBar(props) {
     if (options[index] === "View Profile") window.location = "/dashboard";
     else {
       localStorage.removeItem("login");
-      localStorage.removeItem("x-auth-token");
-      localStorage.removeItem("username");
+      localStorage.removeItem("access-token");
       setLogin(false);
       window.location = "/";
     }

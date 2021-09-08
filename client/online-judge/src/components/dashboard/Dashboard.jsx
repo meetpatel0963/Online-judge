@@ -78,39 +78,24 @@ const Dashboard = () => {
       return JSON.parse(window.atob(base64));
     };
 
-    const _user = parseJwt(localStorage.getItem("x-auth-token"));
-    let userId = null;
-    if (_user != null) userId = _user._id;
+    const accessToken = localStorage.getItem("access-token");
+    const userId = parseJwt(accessToken).sub;
 
     axios
-      .get(`${BACK_SERVER_URL}/home/user/${userId}`)
+      .get(`${BACK_SERVER_URL}/api/user/userId/${userId}`, { headers: {"Authorization" : `Bearer ${accessToken}`} })
       .then((res) => {
         setUser(res.data);
-        axios
-          .get(`${BACK_SERVER_URL}/home/submission/${userId}`)
-          .then((problemTags) => {
-            let _tags = [["Tag", "Count"]];
 
-            Object.keys(problemTags.data).forEach((curTag) => {
-              _tags.push([curTag, problemTags.data[curTag]]);
-            });
-
-            setTags(_tags);
-          })
-          .catch((err) => {
-            const error = err.response
-              ? err.response.data.message
-              : err.message;
-            toast.error(error, {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
+        if(res.data !== null) {
+          const userTags = res.data.stats.tags;
+          let tags_ = [["Tag", "Count"]];
+          
+          Object.keys(userTags).forEach((curTag) => {
+            tags_.push([curTag, userTags[curTag]]);
           });
+
+          setTags(tags_);
+        }
       })
       .catch((err) => {
         const error = err.response ? err.response.data.message : err.message;
@@ -133,18 +118,22 @@ const Dashboard = () => {
 
       let _hasData = false;
 
-      Object.keys(user.stats).forEach((keyName) => {
-        _hasData |= user.stats[keyName] !== 0;
-        if (keyName === "easy" || keyName === "medium" || keyName === "hard") {
+      console.log(user.stats.verdicts);
+      
+      Object.keys(user.stats.verdicts).forEach((keyName) => {
+        _hasData |= user.stats.verdicts[keyName] !== 0;
+          _submissions.push([
+            keyName.charAt(0).toUpperCase() + keyName.toLowerCase().slice(1),
+            user.stats.verdicts[keyName],
+          ]);
+      });
+      
+      Object.keys(user.stats.difficulties).forEach((keyName) => {
+        _hasData |= user.stats.difficulties[keyName] !== 0;
           _problemDifficulties.push([
             keyName.charAt(0).toUpperCase() + keyName.toLowerCase().slice(1),
-            user.stats[keyName],
+            user.stats.difficulties[keyName],
           ]);
-        } else {
-          const newKeyName = keyName.split("Count")[0];
-          if (newKeyName !== "total")
-            _submissions.push([newKeyName.toUpperCase(), user.stats[keyName]]);
-        }
       });
 
       setSubmissions(_submissions);
@@ -213,23 +202,31 @@ const Dashboard = () => {
       </div>
       <div className="dashboard-right">
         <div className="dashboard-top-right">
-          <Chart
-            width={"900px"}
-            height={"550px"}
-            chartType="PieChart"
-            loader={
-              <CustomCard child={<CircularProgress color="secondary" />} />
-            }
-            data={tags}
-            options={{
-              title: "Tags of " + user.firstName + " " + user.lastName,
-              pieHole: 0,
-              titleTextStyle: {
-                fontSize: 20,
-              },
-            }}
-            rootProps={{ "data-testid": "3" }}
-          />
+          {hasData ? (
+            <Chart
+              width={"900px"}
+              height={"550px"}
+              chartType="PieChart"
+              loader={
+                <CustomCard child={<CircularProgress color="secondary" />} />
+              }
+              data={tags}
+              options={{
+                title: "Tags of " + user.firstName + " " + user.lastName,
+                pieHole: 0,
+                titleTextStyle: {
+                  fontSize: 20,
+                },
+              }}
+              rootProps={{ "data-testid": "3" }}
+            />
+          ) : (
+            <div className="dashboard-chart-no-data">
+              <p className="dashboard-chart-no-data-title">
+                You have not submitted anything yet.
+              </p>
+            </div>
+          )}
         </div>
         <div className="dashboard-bottom-right">
           <Chart

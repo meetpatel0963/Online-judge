@@ -7,11 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCode } from "@fortawesome/free-solid-svg-icons";
 import Chip from "@material-ui/core/Chip";
 
-import { BACK_SERVER_URL } from "../../config/config";
+import { BACK_SERVER_URL, JUDGE_URL } from "../../config/config";
 
 import CodeEditor from "./codeEditor/CodeEditor";
 import ResultTable from "./resultTable/ResultTable";
-import { getDifficulty } from "../../utils";
 
 import "./problem.css";
 
@@ -33,12 +32,12 @@ const Problem = (props) => {
     Java: "java",
     Python: "py",
   };
-  
+
   useEffect(() => {
-    const problemName = props.match.params.name;
+    const problemId = props.match.params.id;
 
     axios
-      .get(`${BACK_SERVER_URL}/home/problem/${problemName}`)
+      .get(`${BACK_SERVER_URL}/api/problem/${problemId}`)
       .then((res) => {
         if (!res.data || res.data.length === 0) setProblemDoesNotExists(true);
         else {
@@ -60,7 +59,7 @@ const Problem = (props) => {
       });
 
     return () => {};
-  }, [props.match.params.name]);
+  }, [props.match.params.id]);
 
   const handleLanguageSelect = (e) => {
     e.preventDefault();
@@ -74,67 +73,64 @@ const Problem = (props) => {
   const onCodeChange = (newValue) => {
     setCode(newValue);
   };
-  
+
   const parseJwt = (token) => {
     var base64Url = token.split(".")[1];
     var base64 = base64Url.replace("-", "+").replace("_", "/");
     return JSON.parse(window.atob(base64));
   };
-  
+
   const submit = (e) => {
     e.preventDefault();
     const operation = e.currentTarget.value.toString();
     if (operation === "runcode") setRunLoading(true);
     else setSubmitLoading(true);
-    
-    const token = localStorage.getItem("x-auth-token");
-    const userId = parseJwt(token)._id;
-    const difficulty = getDifficulty(problem).toLowerCase();
+
+    const accessToken = localStorage.getItem("access-token");
+    const userId = parseJwt(accessToken).sub;
+
     axios
-      .post(`${BACK_SERVER_URL}/home/submission`, {
-        problemName: problem.name,
-        code,
-        lang: languageExtention[language],
-        operation,
-        userId,
-      })
+      .post(`${JUDGE_URL}/api/evaluate`, {
+        sampleTestCases: problem.sampleTestcases,
+        systemTestCases: problem.systemTestcases,
+        code: code,
+        language: languageExtention[language],
+      }, { headers: {"Authorization" : `Bearer ${accessToken}`} })
       .then((res) => {
         if (operation === "runcode") setRunLoading(false);
         else {
           setSubmitLoading(false);
-            axios
-              .put(
-                `${BACK_SERVER_URL}/home/submission`,
-                {
-                  problemName: problem.name,
-                  finalResult: res.data.finalResult,
-                  userId,
-                  difficulty,
-                },
-                {
-                  headers: {
-                    "x-auth-token": token,
-                  },
-                }
-              )
-              .then((result) => {})
-              .catch((err) => {
-                const error = err.response
-                  ? err.response.data.message
-                  : err.message;
-                toast.error(error, {
-                  position: "top-right",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                });
+          axios
+            .post(
+              `${BACK_SERVER_URL}/api/submission`,
+              {
+                problemName: problem.name,
+                code,
+                language: languageExtention[language],
+                userId,
+                verdict: res.data.verdict,
+                result: res.data.result,
+              },
+              { headers: {"Authorization" : `Bearer ${accessToken}`} }
+            )
+            .then(() => {})
+            .catch((err) => {
+              const error = err.response
+                ? err.response.data.message
+                : err.message;
+              toast.error(error, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
               });
+            });
         }
         setResults(res.data.finalResult);
-        
+
         if (resultRef.current) {
           resultRef.current.scrollIntoView({
             behavior: "smooth",
@@ -161,13 +157,14 @@ const Problem = (props) => {
     <>
       <h1>Not Found</h1>
     </>
+  ) : loading ? (
+    <div className="problem-loading-spinner">
+      <BeatLoader color={"#343a40"} size={30} loading={loading} />
+    </div>
   ) : (
     <div>
       <div className="problem-container">
         <ToastContainer />
-        <div className="problem-loading-spinner">
-          <BeatLoader color={"#343a40"} size={30} loading={loading} />
-        </div>
         <div className="problem-title-wrapper">
           <div className="problem-title">
             <FontAwesomeIcon

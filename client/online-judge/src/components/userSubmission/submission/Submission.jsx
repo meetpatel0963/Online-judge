@@ -8,7 +8,7 @@ const Submission = ({ submission }) => {
     <div className="submission-container">
       <SyntaxHighlighter
         showLineNumbers={true}
-        language={submission.lang}
+        language={submission.language}
         style={a11yDark}
       >
         {submission.code}

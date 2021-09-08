@@ -7,7 +7,6 @@ import { AuthContext } from "./authContext";
 
 const AppWrapper = () => {
   const [login, setLogin] = useState(false);
-  console.log(login);
 
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("login")) === true) setLogin(true);

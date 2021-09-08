@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   Grid,
   Paper,
@@ -18,7 +18,6 @@ import { Redirect } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { AuthContext } from "../../authContext";
 import { BACK_SERVER_URL } from "../../config/config";
 
 import "./signUp.css";
@@ -41,18 +40,16 @@ const Copyright = () => {
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [description, setDescription] = useState("");
-  const [signedIn, setSignedIn] = useState(false);
+  const [signedUp, setSignedUp] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const appContext = useContext(AuthContext);
-  const { login, setLogin } = appContext;
-
+  
   const validateEmail = (e) => {
     const emailreg =
       /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/;
@@ -72,30 +69,44 @@ const SignUp = () => {
     else setPasswordError("");
     setPassword(e.target.value);
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
 
     const _contact = parsePhoneNumber(contact);
-    
+
     axios
-      .post(`${BACK_SERVER_URL}/home/user`, {
+      .post(`${BACK_SERVER_URL}/api/auth/signup`, {
         firstName,
         lastName,
+        username,
         email,
         contact,
         country: _contact.country,
         password,
         description,
+        stats: {
+          "totalCount": 0,
+          "verdicts": {
+            "ACCount": 0,
+            "WACount": 0,
+            "TLECount": 0,
+            "MLECount": 0,
+            "CECount": 0,
+            "RTECount": 0,
+          },
+          "tags":{
+          },
+          "difficulties": {
+            "easy": 0,
+            "medium": 0,
+            "hard": 0,
+          }
+        },
       })
       .then((res) => {
-        const user = res.data;
-        localStorage.setItem("x-auth-token", res.headers["x-auth-token"]);
-        localStorage.setItem("login", true);
-        localStorage.setItem("username", user.firstName + " " + user.lastName);
-        setSignedIn(true);
-        setLogin(true);
+        setSignedUp(true);
       })
       .catch((err) => {
         setLoading(false);
@@ -112,7 +123,7 @@ const SignUp = () => {
       });
   };
 
-  if (signedIn) return <Redirect to="/problemset" />;
+  if (signedUp) return <Redirect to="/signin" />;
 
   return (
     <Grid align="center" className="signup-container">
@@ -128,25 +139,36 @@ const SignUp = () => {
           </Typography>
         </Grid>
         <form onSubmit={handleSubmit}>
+          <div className="signup-name-container">
+            <TextField
+              fullWidth
+              id="firstName"
+              name="firstName"
+              label="First Name"
+              placeholder="Enter your first name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              autoFocus
+              required
+            />
+            <TextField
+              fullWidth
+              id="lastName"
+              label="Last Name"
+              name="lastName"
+              placeholder="Enter your last name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </div>
           <TextField
             fullWidth
-            id="firstName"
-            name="firstName"
-            label="First Name"
-            placeholder="Enter your first name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            autoFocus
-            required
-          />
-          <TextField
-            fullWidth
-            id="lastName"
-            label="Last Name"
-            name="lastName"
-            placeholder="Enter your last name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            id="username"
+            label="Username"
+            name="username"
+            placeholder="Enter username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
             fullWidth

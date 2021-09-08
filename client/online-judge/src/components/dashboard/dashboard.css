@@ -95,3 +95,16 @@
   margin-left: 10px;
 }
 
+.dashboard-chart-no-data{
+  width: 900px;
+  height: 550px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 40px;
+}
+
+.dashboard-chart-no-data-title{
+  font-weight: 600;
+  font-size: x-large;
+}

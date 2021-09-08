@@ -21,7 +21,7 @@ import axios from "axios";
 import "./signIn.css";
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -33,20 +33,19 @@ const SignIn = () => {
     setLoading(true);
     
     axios
-      .post(`${BACK_SERVER_URL}/home/auth`, {
-        email,
+      .post(`${BACK_SERVER_URL}/api/auth/signin`, {
+        usernameOrEmail: username,
         password,
       })
       .then((res) => {
-        const user = res.data;
-        localStorage.setItem("x-auth-token", res.headers["x-auth-token"]);
+        localStorage.setItem("access-token", res.data.accessToken);
         localStorage.setItem("login", true);
-        localStorage.setItem("username", user.firstName + " " + user.lastName);
+        localStorage.setItem("username", username);
         setLogin(true);
       })
       .catch((err) => {
         setLoading(false);
-        const error = err.response ? err.response.data.message : err.message;
+        const error = "Invalid Username or Password!";
         toast.error(error, {
           position: "top-right",
           autoClose: 5000,
@@ -73,17 +72,17 @@ const SignIn = () => {
         </Grid>
         <TextField
           label="Username"
-          placeholder="Enter username/email"
+          placeholder="Enter your username"
           id="username"
           name="username"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
           autoFocus
           fullWidth
           required
         />
         <TextField
           label="Password"
-          placeholder="Enter password"
+          placeholder="Enter your password"
           type="password"
           name="password"
           id="password"

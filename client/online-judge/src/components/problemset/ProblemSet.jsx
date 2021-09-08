@@ -52,7 +52,7 @@ export default function ProblemSet() {
 
   useLayoutEffect(() => {
     axios
-      .get(`${BACK_SERVER_URL}/home/problem`)
+      .get(`${BACK_SERVER_URL}/api/problem`)
       .then((res) => {
         let problems = res.data;
 
@@ -153,7 +153,7 @@ export default function ProblemSet() {
                         hover
                         role="checkbox"
                         tabIndex={-1}
-                        key={row.code}
+                        key={index}
                       >
                         {columns.map((column) => {
                           const value =
@@ -199,7 +199,7 @@ export default function ProblemSet() {
                             return (
                               <TableCell key={column.id} align={column.align}>
                                 <Link
-                                  to={`/problem/${value}`}
+                                  to={`/problem/${allProblems[index].id}`}
                                   style={{
                                     fontWeight: "bold",
                                     fontSize: "15px",

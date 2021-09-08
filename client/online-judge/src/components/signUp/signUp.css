@@ -15,6 +15,11 @@
   margin: 0px;
 }
 
+.signup-name-container{
+  display: flex;
+  gap: 15px;
+}
+
 .signup-avatar {
   background-color: #1bbd7e !important;
 }

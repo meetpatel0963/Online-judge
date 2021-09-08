@@ -86,19 +86,18 @@ export default function UserSubmission() {
     python: "Python3",
   };
 
-  console.log(rows);
-
   useLayoutEffect(() => {
     const parseJwt = (token) => {
       var base64Url = token.split(".")[1];
       var base64 = base64Url.replace("-", "+").replace("_", "/");
       return JSON.parse(window.atob(base64));
     };
-
-    const userId = parseJwt(localStorage.getItem("x-auth-token"))._id;
+    
+    const accessToken = localStorage.getItem("access-token");
+    const userId = parseJwt(accessToken).sub;
 
     axios
-      .get(`${BACK_SERVER_URL}/home/submission/usersubmission/${userId}`)
+      .get(`${BACK_SERVER_URL}/api/submission/user/${userId}`, { headers: {"Authorization" : `Bearer ${accessToken}`} })
       .then((res) => {
         if (!res.data || res.data.length === 0) setHasSubmissions(false);
         else setRows(res.data);
