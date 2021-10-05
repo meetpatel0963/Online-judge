@@ -27,6 +27,7 @@ export default function NavBar(props) {
     else {
       localStorage.removeItem("login");
       localStorage.removeItem("access-token");
+      localStorage.removeItem("username");
       setLogin(false);
       window.location = "/";
     }

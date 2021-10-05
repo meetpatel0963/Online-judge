@@ -1,29 +1,35 @@
 const express = require("express");
+const axios = require("axios");
 const router = express.Router();
 const addSubmission = require("../judge");
+const auth = require("../middleware/auth");
+const Submission = require("../models/submission");
 
 router.post("/", auth, (req, res) => {
   const solution = {
     problemName: req.body.problemName,
     code: req.body.code,
-    lang: req.body.lang,
-    userId: req.body.userId,
+    language: req.body.language,
     verdict: "",
   };
 
-  const op = req.body.operation;
+  const operation = req.body.operation;
 
   let submission = new Submission(solution);
 
   console.log(submission);
 
-  Problem.findOne({ name: req.body.problemName })
-    .then((problem) => {
-      addSubmission(problem, submission, op, (err, result) => {
-        if (err)
+  axios
+    .get(`${process.env.BACK_SERVER_URL}/api/problem/${req.body.problemId}`)
+    .then((problemResponse) => {
+      const problem = problemResponse.data;
+      addSubmission(problem, submission, operation, (err, result) => {
+        if (err) {
+          console.log(err);
           return res
             .status(500)
             .json({ message: "Something Went Wrong! Try Again!!!" });
+        }
 
         let finalResult = [];
         let verdicts = [],
@@ -61,15 +67,12 @@ router.post("/", auth, (req, res) => {
         else if (verdicts.includes("WA")) submission.verdict = "WA";
         else if (verdicts.includes("AC")) submission.verdict = "AC";
 
-        if (op === "submit")
-          return submission
-            .save()
-            .then(() => res.send({ finalResult }))
-            .catch((error) =>
-              res.status(500).json({ message: "Something Went Wrong!" })
-            );
-        else return res.send({ finalResult });
+        console.log(submission.verdict, finalResult);
+
+        return res.send({ verdict: submission.verdict, result: finalResult });
       });
     })
     .catch((err) => res.status(404).json({ message: "Problem Not Found..." }));
 });
+
+module.exports = router;

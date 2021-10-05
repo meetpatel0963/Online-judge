@@ -117,13 +117,11 @@ const Dashboard = () => {
         _problemDifficulties = [["Field", "Count"]];
 
       let _hasData = false;
-
-      console.log(user.stats.verdicts);
       
       Object.keys(user.stats.verdicts).forEach((keyName) => {
         _hasData |= user.stats.verdicts[keyName] !== 0;
           _submissions.push([
-            keyName.charAt(0).toUpperCase() + keyName.toLowerCase().slice(1),
+            keyName,
             user.stats.verdicts[keyName],
           ]);
       });

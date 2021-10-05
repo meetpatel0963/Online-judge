@@ -88,13 +88,14 @@ const Problem = (props) => {
 
     const accessToken = localStorage.getItem("access-token");
     const userId = parseJwt(accessToken).sub;
-
+    
     axios
       .post(`${JUDGE_URL}/api/evaluate`, {
-        sampleTestCases: problem.sampleTestcases,
-        systemTestCases: problem.systemTestcases,
+        problemId: problem.id,
+        problemName: problem.name,
         code: code,
         language: languageExtention[language],
+        operation: operation,
       }, { headers: {"Authorization" : `Bearer ${accessToken}`} })
       .then((res) => {
         if (operation === "runcode") setRunLoading(false);
@@ -129,7 +130,7 @@ const Problem = (props) => {
               });
             });
         }
-        setResults(res.data.finalResult);
+        setResults(res.data.result);
 
         if (resultRef.current) {
           resultRef.current.scrollIntoView({

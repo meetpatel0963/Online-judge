@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const cors = require("cors");
 
-const evaluate = require("./routes/evalate");
+const evaluate = require("./routes/evaluate");
 
 // Load config
 dotenv.config({ path: "./config/config.env" });
