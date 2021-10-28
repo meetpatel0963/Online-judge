@@ -75,9 +75,10 @@ const Problem = (props) => {
   };
 
   const parseJwt = (token) => {
+    if(token === "" || token === null) return null;
     var base64Url = token.split(".")[1];
     var base64 = base64Url.replace("-", "+").replace("_", "/");
-    return JSON.parse(window.atob(base64));
+    return JSON.parse(window.atob(base64)).sub;
   };
 
   const submit = (e) => {
@@ -87,7 +88,7 @@ const Problem = (props) => {
     else setSubmitLoading(true);
 
     const accessToken = localStorage.getItem("access-token");
-    const userId = parseJwt(accessToken).sub;
+    const userId = parseJwt(accessToken);
     
     axios
       .post(`${JUDGE_URL}/api/evaluate`, {
@@ -100,6 +101,7 @@ const Problem = (props) => {
       .then((res) => {
         if (operation === "runcode") setRunLoading(false);
         else {
+          setRunLoading(false);
           setSubmitLoading(false);
           axios
             .post(
@@ -141,6 +143,8 @@ const Problem = (props) => {
         }
       })
       .catch((err) => {
+        setRunLoading(false);
+        setSubmitLoading(false);
         const error = err.response ? err.response.data.message : err.message;
         toast.error(error, {
           position: "top-right",
@@ -205,8 +209,8 @@ const Problem = (props) => {
           />
         </div>
         <div className="problem-sample-test-wrapper">
-          {problem.sampleTestcase &&
-            problem.sampleTestcase.map((testcase, index) => (
+          {problem.sampleTestcases &&
+            problem.sampleTestcases.map((testcase, index) => (
               <div className="problem-sample-test" key={index}>
                 <div className="problem-sample-test-input">
                   <span className="problem-sample-test-input-title">

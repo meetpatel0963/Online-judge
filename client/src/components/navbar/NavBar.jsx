@@ -49,9 +49,14 @@ export default function NavBar(props) {
               Problemset
             </Link>
             {login ? (
-              <Link to="/usersubmission" className="navbarItem">
-                My Submissions
-              </Link>
+              <>
+                <Link to="/addproblem" className="navbarItem">
+                  Add Problem
+                </Link>
+                <Link to="/usersubmission" className="navbarItem">
+                  My Submissions
+                </Link>
+              </>
             ) : null}
           </div>
         </div>

@@ -11,6 +11,7 @@
 
 .navbarWrapper{
     height: 100%;
+    width: 100%;
     padding: 0px 20px;
     display: flex;
     align-items: center;

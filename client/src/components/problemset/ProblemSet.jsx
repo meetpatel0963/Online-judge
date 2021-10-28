@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 export default function ProblemSet() {
   const classes = useStyles();
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rowsPerPage, setRowsPerPage] = useState(12);
   const [allProblems, setAllProblems] = useState([]);
   const [rows, setRows] = useState([]);
   const [loader, setLoader] = useState(true);
@@ -157,7 +157,7 @@ export default function ProblemSet() {
                       >
                         {columns.map((column) => {
                           const value =
-                            column.id === "id" ? index + 1 : row[column.id];
+                            column.id === "id" ? page * rowsPerPage + index + 1 : row[column.id];
                           if (column.id === "tags") {
                             return (
                               <TableCell key={column.id} align={column.align}>

@@ -16,7 +16,7 @@
 - [x] Filter problems based on tags
 - [x] Search problems by name
 - [x] Dashboard for Statistics
-- [ ] Create Coding Problems
+- [x] Create Coding Problems
 - [ ] E-mail verification
 - [ ] Forgot password
 - [ ] Leaderboard
@@ -33,13 +33,12 @@
 
 ## Env Variables
 
-Create a .env file in then root and add the following
-### Make Sure to connect to gmail api at google developer console
+> #### In judge/config/config.js:
+
 ```
 PORT = 5000
-MONGO_URI = your mongo url
-JWT_PRIVATE_KEY = your JWT token
-EMAIL_SECRET = your email secret
+JWT_PRIVATE_KEY = <Your_JWT_Token>
+BACK_SERVER_URL = <Spring_Server_URL>
 ```
 
 ## Setup Locally
@@ -48,11 +47,14 @@ EMAIL_SECRET = your email secret
 > #### Start Docker Desktop
 
 ```bash
-git clone https://github.com/jojozhuang/online-judge-mean.git
+git clone https://github.com/meetpatel0963/Online-judge.git
 cd online-judge
 ```
 ### Client
-#### Change BACK_SERVER_URL="http://localhost:5000" in client/src/config/config.js
+> #### In client/src/config/config.js:
+#### Change BACK_SERVER_URL="http://localhost:<spring_server_port>" 
+#### Change JUDGE_URL="http://localhost:<judge_server_port>"
+
 ```bash
 cd client
 npm install
@@ -60,9 +62,10 @@ npm start
 ```
 
 ### Server
-#### Change PATH_INIT={{Path to Server Directory}} in server/judge/judge.js
+> #### Start Spring Boot Server
+#### Change PATH_INIT={{Path to Server Directory}} in judge/judge.js
 ```bash
-cd server
+cd judge
 mkdir submissions
 npm install
 cd docker
@@ -88,6 +91,9 @@ npm start
 ![Problem](./images/codeeditor.png)
 ### Results
 ![Results](./images/results.png)
+### Add Problem Page
+![AddProblem](./images/addproblem1.png)
+![AddProblem](./images/addproblem2.png)
 ### User Submissions
 ![My Submission](./images/usersubmission.png)
 ### User Submission Modal

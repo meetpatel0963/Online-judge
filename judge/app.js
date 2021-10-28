@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 
 const evaluate = require("./routes/evaluate");
+const problem = require("./routes/problem");
 
 // Load config
 dotenv.config({ path: "./config/config.env" });
@@ -19,6 +20,7 @@ app.use(
 app.use(cors());
 
 app.use("/api/evaluate", evaluate);
+app.use("/api/problem", problem);
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("tiny"));

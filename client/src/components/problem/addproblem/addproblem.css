@@ -1,0 +1,48 @@
+.addproblem-container {
+    padding: 40px 200px;
+}
+
+.add-problem-title, .add-problem-statement, .addproblem-explanation, 
+.addproblem-testcasefile, .addproblem-testcasefile-format, .addproblem-solutionfile,
+.sample-testcase-input, .sample-testcase-output {
+    margin: 10px 0px;
+    font-weight: 600;
+    font-size: medium;
+    color: white;
+}
+
+.addproblem-testcasefile {
+    display: inline-block;
+}
+
+.createproblem-tags-btn {
+    font-family:  "Roboto";
+    display: inline-block;
+    font-size: 15px;
+    margin-top: 10px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    padding: 6px 12px;
+    margin-bottom: 5px;
+    margin-right: 7px;
+    border-radius: 10px;
+    background-color: #fff;
+    border: 1px solid #eee !important;
+    transition: all .4s;
+}
+
+.createproblem-tags-btn:hover {
+    background-color:#FFA726;
+    color: #fff !important;
+}   
+
+.ql-container {
+    min-height: 20em;
+    font-size: 16px;
+}

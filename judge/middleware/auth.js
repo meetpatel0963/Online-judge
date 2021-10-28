@@ -5,19 +5,19 @@ module.exports = (req, res, next) => {
 
   if (token === "null")
     return res.status(400).json({
-      message: "Access denied. No token provided.",
+      message: "Access denied! You need to sign in.",
     });
 
   if (!token.startsWith("Bearer "))
     return res.status(500).json({
-      message: "Access denied!",
+      message: "Access denied! You need to sign in.",
     });
 
   token = token.slice(7);
 
-  if (token === "")
+  if (token === "" || token == "null")
     return res.status(500).json({
-      message: "Access denied!",
+      message: "Access denied! You need to sign in.",
     });
 
   console.log(token);

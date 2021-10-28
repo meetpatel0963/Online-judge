@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import ProblemSet from "./components/problemset/ProblemSet";
 import Problem from "./components/problem/Problem";
+import AddProblem from "./components/problem/addproblem/AddProblem";
 import NavBar from "./components/navbar/NavBar";
 import SignIn from "./components/signIn/SignIn";
 import SignUp from "./components/signUp/SignUp";
@@ -23,6 +24,7 @@ const App = () => {
         <Switch>
           <Route exact path="/problemset" component={ProblemSet} />
           <Route exact path="/problem/:id" component={Problem} />
+          <Route exact path="/addproblem" component={AddProblem} />
           <Route exact path="/usersubmission" component={UserSubmission} />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/signin" component={SignIn} />

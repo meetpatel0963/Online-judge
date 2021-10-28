@@ -72,7 +72,7 @@ router.post("/", auth, (req, res) => {
         return res.send({ verdict: submission.verdict, result: finalResult });
       });
     })
-    .catch((err) => res.status(404).json({ message: "Problem Not Found..." }));
+    .catch((err) => res.status(404).json({ message: "Problem Not Found." }));
 });
 
 module.exports = router;

@@ -3,6 +3,7 @@ package com.onlinejudge.model;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -22,6 +23,7 @@ import lombok.Setter;
 @Data
 @Getter 
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Problem {
 	
 	@Id
@@ -55,7 +57,7 @@ public class Problem {
 	private ArrayList<Map<String, ?>> systemTestcases;
 	
 	@Field("time")
-	private int time;
+	private double time;
 	
 	@Field("memory")
 	private int memory;
