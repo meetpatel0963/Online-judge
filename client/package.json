@@ -54,6 +54,6 @@
     ]
   },
   "devDependencies": {
-    "dependency-cruiser": "^10.2.0"
+    "dependency-cruiser": "^10.5.0"
   }
 }

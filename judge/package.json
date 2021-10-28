@@ -29,5 +29,8 @@
     "p-queue": "^6.6.2",
     "shelljs": "^0.8.4",
     "string_decoder": "^1.3.0"
+  },
+  "devDependencies": {
+    "dependency-cruiser": "^10.5.0"
   }
 }
