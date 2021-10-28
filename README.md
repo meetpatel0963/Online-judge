@@ -92,8 +92,8 @@ npm start
 ### Results
 ![Results](./images/results.png)
 ### Add Problem Page
-![AddProblem](./images/addproblem1.png)
-![AddProblem](./images/addproblem2.png)
+![AddProblem](./images/addproblem1.PNG)
+![AddProblem](./images/addproblem2.PNG)
 ### User Submissions
 ![My Submission](./images/usersubmission.png)
 ### User Submission Modal
