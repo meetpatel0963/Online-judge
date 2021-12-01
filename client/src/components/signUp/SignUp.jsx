@@ -216,7 +216,7 @@ const SignUp = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
           <FormControlLabel
-            style={{ marginTop: "30px" }}
+            style={{ marginTop: "20px" }}
             control={<Checkbox name="checkedA" />}
             label="I accept the terms and conditions."
           />
@@ -224,7 +224,7 @@ const SignUp = () => {
             type="submit"
             variant="contained"
             color="primary"
-            style={{ marginTop: "30px" }}
+            style={{ marginTop: "20px" }}
           >
             {loading ? (
               <CircularProgress size={"23px"} style={{ color: "white" }} />

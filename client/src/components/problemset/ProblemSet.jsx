@@ -199,7 +199,7 @@ export default function ProblemSet() {
                             return (
                               <TableCell key={column.id} align={column.align}>
                                 <Link
-                                  to={`/problem/${allProblems[index].id}`}
+                                  to={`/problem/${allProblems[page * rowsPerPage + index].id}`}
                                   style={{
                                     fontWeight: "bold",
                                     fontSize: "15px",

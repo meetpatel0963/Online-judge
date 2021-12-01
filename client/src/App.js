@@ -13,6 +13,7 @@ import SignIn from "./components/signIn/SignIn";
 import SignUp from "./components/signUp/SignUp";
 import UserSubmission from "./components/userSubmission/UserSubmission";
 import Dashboard from "./components/dashboard/Dashboard";
+import NoContent from "./components/userSubmission/noContent/NoContent";
 
 import "./App.css";
 
@@ -26,6 +27,7 @@ const App = () => {
           <Route exact path="/problem/:id" component={Problem} />
           <Route exact path="/addproblem" component={AddProblem} />
           <Route exact path="/usersubmission" component={UserSubmission} />
+          <Route exact path="/nocontent" component={NoContent} />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/signin" component={SignIn} />
           <Route exact path="/signup" component={SignUp} />

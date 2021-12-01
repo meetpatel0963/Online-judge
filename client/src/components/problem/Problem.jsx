@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import  { Redirect } from 'react-router-dom'
 import axios from "axios";
 import { BeatLoader } from "react-spinners";
 import { ToastContainer, toast } from "react-toastify";
@@ -46,6 +47,8 @@ const Problem = (props) => {
         setLoading(false);
       })
       .catch((err) => {
+        setLoading(false);
+        setProblemDoesNotExists(true);
         const error = err.response ? err.response.data.message : err.message;
         toast.error(error, {
           position: "top-right",
@@ -160,7 +163,7 @@ const Problem = (props) => {
 
   return problemDoesNotExists ? (
     <>
-      <h1>Not Found</h1>
+      <Redirect to="/nocontent" />
     </>
   ) : loading ? (
     <div className="problem-loading-spinner">

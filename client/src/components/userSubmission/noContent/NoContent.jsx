@@ -8,7 +8,7 @@ const NoContent = () => {
       <Card className="nocontent-card">
         <div>
           <p className="nocontent-title">
-            You have not submitted anything yet!
+            Nothing Here!
           </p>
           <hr />
           <p className="nocontent-content">
