@@ -2,6 +2,8 @@ FROM alpine:latest
 
 COPY . .
 
+RUN ls -al
+
 # C-CPP
 RUN apk update \
 && apk add build-base \
@@ -17,5 +19,5 @@ ENV PATH="$JAVA_HOME/bin:${PATH}"
 RUN apk add python3 py3-pip \
 && apk add --upgrade bash
 
-RUN ["chmod", "+x", "./run.sh"]
-ENTRYPOINT [ "./run.sh" ]
+RUN chmod +x ./run.sh
+ENTRYPOINT ./run.sh

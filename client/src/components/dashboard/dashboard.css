@@ -27,6 +27,7 @@
 
 .dashboard-top-right {
   height: fit-content;
+  width: 60vw;
   background-color: white;
   -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
@@ -36,7 +37,8 @@
 .dashboard-bottom-right {
   display: flex;
   height: fit-content;
-  padding-top: 20px;
+  width: 60vw;
+  padding-top: 40px;
   background-color: white;
   -webkit-box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);
   box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.75);

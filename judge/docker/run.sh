@@ -7,94 +7,67 @@ CE=0
 memArr=(3500 7500 95000 19000)
 initMem=0
 
-if [ $lang = "c" ]
-then {
-        initMem=${memArr[0]}
-        gcc -o solution solution.c &> $2 && {
-            {
-                cat testcase.txt | /usr/bin/time -f "%e %M" -o $3 timeout $4s ./solution &> $2    
-            } || {
-                RTE=1        
-            }
-        }
-    } || {
+if [ "$lang" = "c" ]; then
+    initMem=${memArr[0]}
+    if gcc -o solution solution.c &> "$2"; then
+        if { cat testcase.txt | /usr/bin/time -f "%e %M" -o "$3" timeout "$4"s ./solution &> "$2"; } || { RTE=1; }; then
+            :
+        fi
+    else
         CE=1
-    } 
-elif [ $lang = "cpp" ]
-then {
-        initMem=${memArr[1]}
-        g++ -o solution solution.cpp &> $2 && {
-            {
-                cat testcase.txt | /usr/bin/time -f "%e %M" -o $3 timeout $4s ./solution &> $2
-            } || {
-                RTE=1  
-            }
-        }
-    } || {
+    fi
+elif [ "$lang" = "cpp" ]; then
+    initMem=${memArr[1]}
+    if g++ -o solution solution.cpp &> "$2"; then
+        if { cat testcase.txt | /usr/bin/time -f "%e %M" -o "$3" timeout "$4"s ./solution &> "$2"; } || { RTE=1; }; then
+            :
+        fi
+    else
         CE=1
-    }
-elif [ $lang = "java" ]
-then {
-        initMem=${memArr[2]}
-        javac solution.java &> $2 && {
-            {   
-                cat testcase.txt | /usr/bin/time -f "%e %M" -o $3 timeout $4s java solution &> $2  
-            } || {
-                RTE=1        
-            }
-        }
-    } || {
+    fi
+elif [ "$lang" = "java" ]; then
+    initMem=${memArr[2]}
+    if javac solution.java &> "$2"; then
+        if { cat testcase.txt | /usr/bin/time -f "%e %M" -o "$3" timeout "$4"s java solution &> "$2"; } || { RTE=1; }; then
+            :
+        fi
+    else
         CE=1
-    } 
-elif [ $lang = "py" ]
-then {
-        initMem=${memArr[3]}
-        cat testcase.txt | /usr/bin/time -f "%e %M" -o $3 timeout $4s python3 solution.py &> $2
-    } || {
-        RTE=1        
-    }
-fi  
+    fi
+elif [ "$lang" = "py" ]; then
+    initMem=${memArr[3]}
+    if { cat testcase.txt | /usr/bin/time -f "%e %M" -o "$3" timeout "$4"s python3 solution.py &> "$2"; } || { RTE=1; }; then
+        :
+    fi
+fi
 
+if [ "$CE" -ne 0 ]; then
+    echo "COMPILATION ERROR" >> "$2"
+fi
 
-if [[ $CE -ne 1 ]]
-then
-    arr=`cat $3`
-    arr=(${arr// / })
-    if [ ${arr[0]} = "Command" ]
-    then
-        arr=`cat $3 | head -n 2 | tail -n 1`
-        arr=(${arr// / })
+if [ "$RTE" -ne 0 ]; then
+    echo "RUNTIME ERROR" >> "$2"
+fi
+
+if [ "$CE" -eq 0 ] && [ "$RTE" -eq 0 ]; then
+    arr=($(<"$3"))
+    if [ "${arr[0]}" = "Command" ]; then
+        arr=("${arr[2]}" "${arr[3]}")
     fi
 
-    time=${arr[0]}
-    memory=${arr[1]}
+    time=$((arr[0] * 1000))
+    memory=$((arr[1] - initMem))
 
-    time=$(bc -l <<<"${time}*1000")
-    memory=$(bc -l <<<"(${memory}/1)-(${initMem}/1)")
-
-    timeDiff=$(bc -l <<<"($4*1000)-${time}")
-    if [[ $(echo "$timeDiff <= 0" | bc -l) -eq 1 ]]
-    then
-        echo "TLE" >> $2
+    timeDiff=$((4 * 1000 - time))
+    if [ "$timeDiff" -le 0 ]; then
+        echo "TLE" >> "$2"
     fi
 
-    memDiff=$(bc -l <<<"($5*1000)-(${memory}/1)")
-    if [[ $(echo "$memDiff <= 0" | bc -l) -eq 1 ]]
-    then
-        echo "MLE" >> $2
-    fi 
+    memDiff=$((5 * 1000 - memory))
+    if [ "$memDiff" -le 0 ]; then
+        echo "MLE" >> "$2"
+    fi
 fi
 
-if [[ $CE -eq 1 ]]
-then
-    echo "COMPILATION ERROR" >> $2
-fi
-
-if [[ $RTE -eq 1 ]]
-then
-    echo "RUNTIME ERROR" >> $2
-fi
-
-
-echo -e "\n$time" >> $3
-echo $memory >> $3
+echo -e "\n$time" >> "$3"
+echo "$memory" >> "$3"
