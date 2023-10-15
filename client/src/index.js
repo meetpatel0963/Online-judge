@@ -22,6 +22,17 @@ const AppWrapper = () => {
   );
 };
 
+window.addEventListener('error', function (event) {
+  // Check if the error message contains the specific text you want to ignore
+  if (event.message.includes('SyntaxError')) {
+    // You can log the error for debugging purposes if needed
+    console.error('Caught an error:', event.error);
+
+    // Optionally, you can prevent the error from crashing the application
+    event.preventDefault();
+  }
+});
+
 ReactDOM.render(<AppWrapper />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function

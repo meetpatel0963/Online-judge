@@ -202,8 +202,7 @@ const Dashboard = () => {
         <div className="dashboard-top-right">
           {hasData ? (
             <Chart
-              width={"900px"}
-              height={"550px"}
+              height={"70vh"}
               chartType="PieChart"
               loader={
                 <CustomCard child={<CircularProgress color="secondary" />} />
@@ -227,9 +226,10 @@ const Dashboard = () => {
           )}
         </div>
         <div className="dashboard-bottom-right">
+          <div style={{ width: "50%", boxSizing: "border-box"}}>
           <Chart
-            width={"500px"}
-            height={"300px"}
+            height={"50vh"}
+            width={"35vw"}
             chartType="PieChart"
             loader={
               <CustomCard child={<CircularProgress color="secondary" />} />
@@ -244,9 +244,11 @@ const Dashboard = () => {
             }}
             rootProps={{ "data-testid": "2" }}
           />
+          </div>
+          <div style={{ width: "50%", boxSizing: "border-box"}}>
           <Chart
-            width={"500px"}
-            height={"300px"}
+            height={"50vh"}
+            width={"30vw"}
             chartType="PieChart"
             loader={
               <CustomCard child={<CircularProgress color="secondary" />} />
@@ -261,6 +263,7 @@ const Dashboard = () => {
             }}
             rootProps={{ "data-testid": "2" }}
           />
+          </div>
         </div>
         <br /> <br />
       </div>

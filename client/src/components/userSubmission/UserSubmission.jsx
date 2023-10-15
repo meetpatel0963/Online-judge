@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useLayoutEffect } from "react";
 import axios from "axios";
 import { BeatLoader } from "react-spinners";
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     height: "calc(100vh - 100px)",
   },
   container: {
-    maxHeight: 550,
+    maxHeight: "75vh",
   },
 }));
 
@@ -227,17 +228,19 @@ export default function UserSubmission() {
                         } else if (column.id === "problemName") {
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              <Link
+                              <a
+                                href="#"
                                 onClick={() => handleClick(index)}
                                 style={{
                                   fontWeight: "bold",
                                   fontSize: "15px",
                                   textDecoration: "none",
                                   color: "#1a237e",
+                                  cursor: "pointer",
                                 }}
                               >
                                 {value}
-                              </Link>
+                              </a>
                               <Modal
                                 open={modalState.open}
                                 onClose={handleClose}
